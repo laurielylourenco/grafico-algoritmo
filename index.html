@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>amCharts v4 Example</title>
+    <!-- Include amCharts core and chart package -->
+    <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+</head>
+
+<body>
+    <!-- Div where the chart will be rendered -->
+    <div id="chartdiv" style="width: 100%; height: 500px;"></div>
+
+    <script>
+        am4core.ready(function () {
+
+            // Themes begin
+            am4core.useTheme(am4themes_animated);
+            // Themes end
+
+            // Create chart instance
+            var chart = am4core.create("chartdiv", am4charts.XYChart);
+
+            // Add data
+            chart.data = [
+                { "valor": 5000, "quicksort_tempo": 0.00974724, "heapsort_tempo": 0.165716, "mergesort_tempo": 0.0149563 },
+                { "valor": 10000, "quicksort_tempo": 0.0202061, "heapsort_tempo": 0.368187, "mergesort_tempo": 0.0342041 },
+
+                { "valor": 20000, "quicksort_tempo": 0.0484863, "heapsort_tempo": 0.788538, "mergesort_tempo": 0.0810183 },
+                { "valor": 40000, "quicksort_tempo": 0.106485, "heapsort_tempo": 1.7013, "mergesort_tempo": 0.173122 }
+            ];
+
+            // Create axes
+            var valorAxis = chart.xAxes.push(new am4charts.ValueAxis());
+            valorAxis.title.text = "Tamanho do Array (valor)";
+
+            var tempoAxis = chart.yAxes.push(new am4charts.ValueAxis());
+            tempoAxis.title.text = "Tempo de Execução (segundos)";
+
+            // Function to create series
+            function createSeries(field, name) {
+                var series = chart.series.push(new am4charts.LineSeries());
+                series.dataFields.valueX = "valor";
+                series.dataFields.valueY = field;
+                series.name = name;
+                series.tooltipText = "{name}: [bold]{valueY}[/]";
+                series.strokeWidth = 2;
+
+                var bullet = series.bullets.push(new am4charts.CircleBullet());
+                bullet.circle.strokeWidth = 2;
+                bullet.circle.radius = 4;
+                bullet.circle.fill = am4core.color("#fff");
+
+                series.connect = false;
+            }
+
+            // Create series for each algorithm
+            createSeries("quicksort_tempo", "QuickSort");
+            createSeries("heapsort_tempo", "HeapSort");
+            createSeries("mergesort_tempo", "MergeSort");
+
+            // Add legend
+            chart.legend = new am4charts.Legend();
+
+            // Add cursor
+            chart.cursor = new am4charts.XYCursor();
+
+            // Enable chart export
+            chart.exporting.menu = new am4core.ExportMenu();
+
+        }); // end am4core.ready()
+    </script>
+</body>
+
+</html>
