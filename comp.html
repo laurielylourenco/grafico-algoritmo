@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparações</title>
+
+    <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+</head>
+
+<body>
+
+    <div id="chartdiv" style="width: 100%; height: 500px;"></div>
+
+    <script>
+        am4core.ready(function () {
+
+            // Themes begin
+            am4core.useTheme(am4themes_animated);
+            // Themes end
+
+            // Create chart instance
+            var chart = am4core.create("chartdiv", am4charts.XYChart);
+
+            // Add data
+            chart.data = [
+                { "valor": 5000, "quicksort_comparacao": 105413, "heapsort_comparacao": 47177, "mergesort_comparacao": 108623 },
+                { "valor": 10000, "quicksort_comparacao": 229932, "heapsort_comparacao": 101788, "mergesort_comparacao": 237240 },
+
+                { "valor": 20000, "quicksort_comparacao": 496789, "heapsort_comparacao": 218461, "mergesort_comparacao": 514473 },
+                { "valor": 40000, "quicksort_comparacao": 1053835, "heapsort_comparacao": 466771, "mergesort_comparacao": 1108938 }
+            ];
+
+            // Create axes
+            var valorAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+            valorAxis.dataFields.category = "valor";
+            valorAxis.title.text = "Tamanho do Array (valor)";
+            valorAxis.renderer.grid.template.location = 0;
+
+            var comparacaoAxis = chart.yAxes.push(new am4charts.ValueAxis());
+            comparacaoAxis.title.text = "Número de Comparações";
+
+            // Create series with distinct colors
+            function createSeries(field, name, color) {
+                var series = chart.series.push(new am4charts.LineSeries());
+                series.dataFields.valueY = field;
+                series.dataFields.categoryX = "valor";
+                series.name = name;
+                series.strokeWidth = 3;
+                series.stroke = am4core.color(color);
+                series.tooltipText = "{name}: [bold]{valueY}[/]";
+
+                // Add bullets
+                var bullet = series.bullets.push(new am4charts.CircleBullet());
+                bullet.circle.strokeWidth = 2;
+                bullet.circle.radius = 4;
+                bullet.circle.fill = am4core.color("#fff");
+
+                series.connect = false;
+            }
+
+            // Create series for each algorithm with distinct colors
+            createSeries("quicksort_comparacao", "QuickSort", "#FF5733"); // Vermelho forte
+            createSeries("heapsort_comparacao", "HeapSort", "#33FF57");   // Verde forte
+            createSeries("mergesort_comparacao", "MergeSort", "#3357FF"); // Azul forte
+
+            // Add legend
+            chart.legend = new am4charts.Legend();
+
+            // Add cursor
+            chart.cursor = new am4charts.XYCursor();
+
+            // Enable chart export
+            chart.exporting.menu = new am4core.ExportMenu();
+
+        }); // end am4core.ready()
+    </script>
+</body>
+
+</html>

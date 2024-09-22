@@ -1,28 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>amCharts v4 Example</title>
-    <!-- Include amCharts core and chart package -->
+    <title>Grafico de Tempo</title>
+    
     <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
     <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
     <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
 </head>
 
 <body>
-    <!-- Div where the chart will be rendered -->
+
     <div id="chartdiv" style="width: 100%; height: 500px;"></div>
 
     <script>
         am4core.ready(function () {
 
-            // Themes begin
-            am4core.useTheme(am4themes_animated);
-            // Themes end
 
-            // Create chart instance
+            am4core.useTheme(am4themes_animated);
+
             var chart = am4core.create("chartdiv", am4charts.XYChart);
 
             // Add data
@@ -58,18 +56,15 @@
                 series.connect = false;
             }
 
-            // Create series for each algorithm
             createSeries("quicksort_tempo", "QuickSort");
             createSeries("heapsort_tempo", "HeapSort");
             createSeries("mergesort_tempo", "MergeSort");
 
-            // Add legend
             chart.legend = new am4charts.Legend();
 
-            // Add cursor
+
             chart.cursor = new am4charts.XYCursor();
 
-            // Enable chart export
             chart.exporting.menu = new am4core.ExportMenu();
 
         }); // end am4core.ready()
